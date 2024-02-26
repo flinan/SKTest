@@ -1,0 +1,6 @@
+@SKTest.Server_HostAddress = http://localhost:5010
+
+GET {{SKTest.Server_HostAddress}}/User/GetAllUsers/
+Accept: application/json
+
+###

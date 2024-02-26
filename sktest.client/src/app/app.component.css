@@ -1,0 +1,23 @@
+.table-responsive {
+  margin: 50px 100px;
+}
+
+  .table-responsive thead th {
+    background-color: #a1a1a1;
+  }
+
+.usersTableContainer {
+  max-height: 500px;
+}
+
+.userRow {
+  cursor: pointer;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.inputs {
+  margin-top: 50px;
+}

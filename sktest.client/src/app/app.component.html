@@ -1,0 +1,61 @@
+<p *ngIf="!users"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+
+<div class="table-responsive small usersTableContainer">
+  <table *ngIf="users" class="table table-striped table-sm table-bordered table-hover">
+    <thead>
+      <tr>
+        <th scope="col">User ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users" (click)="onSelectUserId(user.userId)" class="userRow" [ngClass]="{ 'table-info': user.userId == selectedUser }">
+        <th scope="row">{{ user.userId }}</th>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <form [formGroup]="userForm" class="d-flex flex-column justify-content-center">
+    <div [class.hidden]="!selectedUser" class="form-floating mb-3">
+      <input type="text" placeholder="" formControlName="userId" class="form-control user-select-none" readonly>
+      <label> User ID</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="text" placeholder="" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': showFormErrors && f['firstName'].errors }">
+      <label> First Name</label>
+      <div *ngIf="f['firstName']?.touched && f['firstName']?.invalid" class="text-danger">
+        First Name is required.
+      </div>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="text" placeholder="" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': showFormErrors && f['lastName'].errors }">
+      <label> Last Name</label>
+      <div *ngIf="f['lastName']?.touched && f['lastName']?.invalid" class="text-danger">
+        Last Name is required.
+      </div>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="email" placeholder="" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': showFormErrors && f['email'].errors }">
+      <label> Email</label>
+      <div *ngIf="f['email']?.touched && f['email']?.invalid" class="text-danger">
+        Please enter a valid email address.
+      </div>
+      <div *ngIf="f['email']?.touched && f['email'].errors?.['emailExistsInDb']" class="text-danger">
+        Email address already used by a different user.
+      </div>
+    </div>
+  </form>
+  <div class="d-flex justify-content-evenly inputs">
+    <button class="btn btn-secondary" (click)="clearForm()" [disabled]="userForm.pristine && (selectedUser == undefined || selectedUser <= 0)">Reset</button>
+    <button class="btn btn-secondary" (click)="addUserFromForm()" [disabled]="(selectedUser != undefined && selectedUser > 0) || userForm.invalid">Add</button>
+    <button class="btn btn-secondary" (click)="updateUserFromForm()" [disabled]="selectedUser == undefined || selectedUser <= 0 || userForm.invalid || userForm.pristine">Update</button>
+    <button class="btn btn-secondary" (click)="deleteSelectedUser()" [disabled]="selectedUser == undefined || selectedUser <= 0">Delete</button>
+  </div>
+</div> <!-- /container -->
