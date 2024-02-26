@@ -7,12 +7,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WebApiService {
-  private readonly apiUrl = 'https://localhost:7183';
   private readonly userController = '/User';
   constructor(private http: HttpClient) { }
 
   public getUsers(callback: Function, errorCb?: Function) {
-    this.http.get<User[]>(this.apiUrl + this.userController + '/GetAllUsers').subscribe(
+    this.http.get<User[]>(this.userController + '/GetAllUsers').subscribe(
       (result) => {
         callback?.(result);
       },
@@ -28,7 +27,7 @@ export class WebApiService {
   }
 
   updateUser(user: User, callback: Function, errorCb?: Function) {
-    this.http.post<User>(this.apiUrl + this.userController + '/UpdateUser', user).subscribe(
+    this.http.post<User>(this.userController + '/UpdateUser', user).subscribe(
       () => {
         callback?.();
       },
@@ -40,7 +39,7 @@ export class WebApiService {
   }
 
   deleteUser(userId: number, callback: Function, errorCb?: Function) {
-    this.http.get<number>(this.apiUrl + this.userController + '/DeleteUser', { params: { userId } }).subscribe(
+    this.http.get<number>(this.userController + '/DeleteUser', { params: { userId } }).subscribe(
       () => {
         callback?.();
       },
@@ -53,6 +52,6 @@ export class WebApiService {
 
   canUseEmail(email: string, userId: number): Observable<boolean> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<boolean>(this.apiUrl + this.userController + '/IsEmailUsedByAnotherUser', JSON.stringify({ email, userId }), { headers });
+    return this.http.post<boolean>(this.userController + '/IsEmailUsedByAnotherUser', JSON.stringify({ email, userId }), { headers });
   }
 }
